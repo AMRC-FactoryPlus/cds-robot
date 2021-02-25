@@ -2,7 +2,7 @@
 
 The CDS is a common order and format of variables taken from different devices to ensure data/metadata is gathered in a consistent format when stored and shared across the the Factory+ architecture.
 
-This initial draft was created from the Robot Companion Specification (https://opcfoundation.org/developer-tools/specifications-opc-ua-information-models/opc-unified-architecture-for-robotics) that has already been defined for OPC UA. This OPC UA data structure has been simplified for our use of MQTT/Sparkplug.
+This initial draft was created from the OPC UA [Robot Companion Specification](https://opcfoundation.org/developer-tools/specifications-opc-ua-information-models/opc-unified-architecture-for-robotics) that has already been defined for OPC UA. This OPC UA data structure has been simplified for our use of MQTT/Sparkplug.
 
 List of datatypes used for the variables in this CDS:
 - String
