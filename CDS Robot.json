@@ -1,0 +1,495 @@
+{
+  "RoboticSystem/": {
+    "description": "Common Data structre for a robotic system.",
+    "requirement": "mandatory",
+    "<RoboticSystemName>/": {
+      "datatype": "String",
+      "description": "A user defined name to identify this robotic system.",
+      "requirement": "mandatory",
+
+      "MotionDevices/": {
+        "description": "folder of all motion devices each describing one independent motion device, e.g. a manipulator, a turn table or a linear axis. A MotionDevice shall have at least one axis and one power train.",
+        "requirement": "mandatory",
+        "<MotionDeviceName>/": {
+          "datatype": "String",
+          "description": "name identifying the motion device.",
+          "requirement": "mandatory",
+          "AssetId": {
+            "datatype": "String",
+            "description": "a user writable alphanumeric character sequence to identify the motion device",
+            "requirement": "optional"
+          },
+          "DeviceManual": {
+            "datatype": "String",
+            "description": "the DeviceManual property allows specifying an address of the user manual for the device. It may be a pathname in the file system or a URL (Web address).",
+            "requirement": "optional"
+          },
+          "SerialNumber": {
+            "datatype": "String",
+            "description": "unique production number assigned by the manufacturer of the device",
+            "requirement": "mandatory"
+          },
+          "Manufacturer": {
+            "datatype": "String",
+            "description": "the name of the company that manufactured the device",
+            "requirement": "mandatory"
+          },
+          "Model": {
+            "datatype": "String",
+            "description": "the name of the product",
+            "requirement": "mandatory"
+          },
+          "ProductCode": {
+            "datatype": "String",
+            "description": "unique combination of numbers and letters used to identify the product. It may be the order information displayed on type shields or in ERP systems",
+            "requirement": "mandatory"
+          },
+          "MotionDeviceCategory": {
+            "datatype": "UInt8",
+            "description": "default is 0 (if unknown). This describes the kind of motion device defined based on ISO 8373. See Table 16 in opcfoundation.org/developer-tools/specifications-opc-ua-information-models/opc-unified-architecture-for-robotics",
+            "requirement": "mandatory"
+          },
+          "OnPath": {
+            "datatype": "Boolean",
+            "description": "is true if the motion device is on or near enough the planned program path such that program execution can continue. If the MotionDevice deviates too much from this path in case of errors or an emergency stop, this value becomes false. If OnPath is false, the motion device needs repositioning to continue program execution.",
+            "requirement": "optional"
+          },
+          "InControl": {
+            "datatype": "Boolean",
+            "description": "provides the information if the actuators (in most cases a motor) of the motion device are powered up and in control: 'true'. The motion device might be in a standstill.\"",
+            "requirement": "optional"
+          },
+          "SpeedOverride": {
+            "datatype": "Double",
+            "description": "provides the current speed setting in percent of programmed speed (0 - 100%).",
+            "requirement": "mandatory"
+          },
+          "Axes/": {
+            "description": "folder of all axes, each describing one axis of a motion device",
+            "requirement": "mandatory",
+            "<AxisName>/": {
+              "datatype": "String",
+              "description": "name identifying the axis",
+              "requirement": "optional",
+              "MotionProfile": {
+                "datatype": "UInt8",
+                "description": "default is 0 (if unknown). This describes the kind of axis motion defined based on Table 22 in opcfoundation.org/developer-tools/specifications-opc-ua-information-models/opc-unified-architecture-for-robotics",
+                "requirement": "mandatory"
+              },
+              "AdditionalLoad/": {
+                "description": "provides data for the load that is mounted on this axis, e.g., a transformer for welding",
+                "requirement": "optional",
+                "Mass": {
+                  "datatype": "Double",
+                  "description": "The variable Mass provides the weight of the load mounted on one mounting point in EngineeringUnits.",
+                  "requirement": "mandatory"
+                },
+                "CenterOfMass": {
+                  "datatype": "String",
+                  "description": "provides the position and orientation of the center of the mass related to the mounting point using a 3DFrameType (as defined in OPC 10001-11 SpatialTypes). X, Y, Z define the position of the center of gravity relative to the mounting point coordinate system. A, B, C define the orientation of the principal axes of inertia relative to the mounting point coordinate system. Orientation A, B, C can be '0' for systems which do not need these values.",
+                  "requirement": "optional"
+                },
+                "Inertia": {
+                  "datatype": "String",
+                  "description": "describes the three values of the principal moments of inertia with respect to the mounting point coordinate system using a 3DVectorType (as defined in OPC 10001-11 SpatialTypes). If inertia values are provided for rotary axis the CenterOfMass shall be completely filled as well.",
+                  "requirement": "optional"
+                }
+              },
+              "ActualPosition": {
+                "datatype": "Double",
+                "description": "provides the current position of the axis and may have limits. If the axis has physical limits, the EURange property of the AnalogUnitType shall be provided.",
+                "requirement": "mandatory"
+              },
+              "ActualSpeed": {
+                "datatype": "Double",
+                "description": "provides the axis speed. Applicable speed limits of the axis shall be provided by the EURange property of the AnalogUnitType",
+                "requirement": "optional"
+              },
+              "ActualAcceleration": {
+                "datatype": "Double",
+                "description": "provides the axis acceleration. Applicable acceleration limits of the axis shall be provided by the EURange property of the AnalogUnitType",
+                "requirement": "optional"
+              }
+            }
+          },
+          "PowerTrains/": {
+            "description": "folder of all power trains of a motion device. A power train typically consists of one motor and gear to provide the required torque. Often there is a one-to-one relation between axes and power trains, but it is also possible to have axis coupling and thus one power train can move multiple axes and one axis can be moved by multiple power trains. One power train can have multiple drives, motors and gears when these components move logically the same axes, for example in a master/slave setup.",
+            "requirement": "mandatory",
+            "<PowerTrainName>/": {
+              "datatype": "String",
+              "description": "name identifying the power train",
+              "requirement": "optional",
+              "Motors/": {
+                "description": "folder of all motors each describing a motor in a power train.",
+                "requirement": "mandatory",
+                "<MotorName>/": {
+                  "datatype": "String",
+                  "description": "name of the motor.",
+                  "requirement": "optional",
+                  "AssetId": {
+                    "datatype": "String",
+                    "description": "a user writable alphanumeric character sequence to identify the device",
+                    "requirement": "optional"
+                  },
+                  "SerialNumber": {
+                    "datatype": "String",
+                    "description": "unique production number assigned by the manufacturer of the device",
+                    "requirement": "mandatory"
+                  },
+                  "Manufacturer": {
+                    "datatype": "String",
+                    "description": "the name of the company that manufactured the device",
+                    "requirement": "mandatory"
+                  },
+                  "Model": {
+                    "datatype": "String",
+                    "description": "the name of the product",
+                    "requirement": "mandatory"
+                  },
+                  "ProductCode": {
+                    "datatype": "String",
+                    "description": "unique combination of numbers and letters used to identify the product. It may be the order information displayed on type shields or in ERP systems",
+                    "requirement": "mandatory"
+                  },
+                  "BrakeReleased": {
+                    "datatype": "Boolean",
+                    "description": "optional variable used only for motors with brakes. If BrakeReleased is TRUE the motor is free to run. FALSE means that the motor shaft is locked by the brake.",
+                    "requirement": "optional"
+                  },
+                  "MotorTemperature": {
+                    "datatype": "Double",
+                    "description": "provides the temperature of the motor. If there is no temperature sensor the value is set to null",
+                    "requirement": "mandatory"
+                  },
+                  "EffectiveLoadRate": {
+                    "datatype": "UInt16",
+                    "description": "expressed as a percentage of maximum continuous load",
+                    "requirement": "optional"
+                  }
+                }
+              },
+              "Gears/": {
+                "description": "describes a gear in a power train, e.g. a gear box or a spindle",
+                "requirement": "optional",
+                "<GearName>/": {
+                  "datatype": "String",
+                  "description": "name of the gear",
+                  "requirement": "optional",
+                  "AssetId": {
+                    "datatype": "String",
+                    "description": "a user writable alphanumeric character sequence to identify the device",
+                    "requirement": "optional"
+                  },
+                  "SerialNumber": {
+                    "datatype": "String",
+                    "description": "unique production number assigned by the manufacturer of the device",
+                    "requirement": "mandatory"
+                  },
+                  "Manufacturer": {
+                    "datatype": "String",
+                    "description": "the name of the company that manufactured the device",
+                    "requirement": "mandatory"
+                  },
+                  "Model": {
+                    "datatype": "String",
+                    "description": "the name of the product",
+                    "requirement": "mandatory"
+                  },
+                  "ProductCode": {
+                    "datatype": "String",
+                    "description": "unique combination of numbers and letters used to identify the product. It may be the order information displayed on type shields or in ERP systems",
+                    "requirement": "mandatory"
+                  },
+                  "GearRatio/": {
+                    "description": "transmission ratio of the gear expressed as a fraction as input velocity (motor side) by output velocity (load side). RationalNumberType and RationalNumber are defined in the OPC 10001-11 (SpatialTypes).",
+                    "requirement": "mandatory",
+                    "Numerator": {
+                      "datatype": "Int32",
+                      "description": "numerator of rational number representing the input velocity (motor side)",
+                      "requirement": "mandatory"
+                    },
+                    "Denominator": {
+                      "datatype": "UInt32",
+                      "description": "denominator of rational number representing the outout velocity (load side)",
+                      "requirement": "mandatory"
+                    }
+                  },
+                  "Pitch": {
+                    "datatype": "double",
+                    "description": "describes the distance covered in millimeters (mm) for linear motion per one revolution of the output side of the driving unit. Pitch is used in combination with GearRatio to describe the overall transmission from input to output of the gear. Calculation formula: Linear Distance = Pitch x Revolutions of input/Gear Ratio",
+                    "requirement": "optional"
+                  }
+                }
+              }
+            }
+          },
+          "FlangeLoad/": {
+            "description": "provides data for the load at the flange or mounting-point of the motion device",
+            "requirement": "optional",
+            "Mass": {
+              "datatype": "Double",
+              "description": "The variable Mass provides the weight of the load mounted on one mounting point in EngineeringUnits.",
+              "requirement": "mandatory"
+            },
+            "CenterOfMass": {
+              "datatype": "String",
+              "description": "provides the position and orientation of the center of the mass related to the mounting point using a 3DFrameType (as defined in OPC 10001-11 SpatialTypes). X, Y, Z define the position of the center of gravity relative to the mounting point coordinate system. A, B, C define the orientation of the principal axes of inertia relative to the mounting point coordinate system. Orientation A, B, C can be '0'  for systems which do not need these values.",
+              "requirement": "optional"
+            },
+            "Inertia": {
+              "datatype": "String",
+              "description": "describes the three values of the principal moments of inertia with respect to the mounting point coordinate system using a 3DVectorType (as defined in OPC 10001-11 SpatialTypes). If inertia values are provided for rotary axis the CenterOfMass shall be completely filled as well.",
+              "requirement": "optional"
+            }
+          },
+          "AdditionalComponents/": {
+            "description": "container for one or more additional components installed at the motion device, e.g. an IO-board. The variables included here depend on the component, but will have the form of ComponentType e.g. ComponentName, SerialNumber, Manufacterer etc. NOTE: Components like motors or gears of a motion device are placed inside the power train object and not inside this AdditionalComponents container.",
+            "requirement": "optional",
+            "<ComponentName>/": {
+              "datatype": "String",
+              "description": "name identifying the component",
+              "requirement": "optional"
+            }
+          }
+        }
+      },
+
+
+
+      "Controllers/": {
+        "datatype": "String",
+        "description": "folder of all controllers each describing the control unit of motion devices. One motion device system can have one or more controllers.",
+        "requirement": "mandatory",
+        "<ControllerName>/": {
+          "datatype": "String",
+          "description": "name identifying the controller",
+          "requirement": "mandatory",
+          "AssetId": {
+            "datatype": "String",
+            "description": "a user writable alphanumeric character sequence to identify the motion device",
+            "requirement": "optional"
+          },
+          "DeviceManual": {
+            "datatype": "String",
+            "description": "the DeviceManual property allows specifying an address of the user manual for the device. It may be a pathname in the file system or a URL (Web address).",
+            "requirement": "optional"
+          },
+          "SerialNumber": {
+            "datatype": "String",
+            "description": "unique production number assigned by the manufacturer of the device",
+            "requirement": "mandatory"
+          },
+          "Manufacturer": {
+            "datatype": "String",
+            "description": "the name of the company that manufactured the device",
+            "requirement": "mandatory"
+          },
+          "Model": {
+            "datatype": "String",
+            "description": "the name of the product",
+            "requirement": "mandatory"
+          },
+          "ProductCode": {
+            "datatype": "String",
+            "description": "unique combination of numbers and letters used to identify the product. It may be the order information displayed on type shields or in ERP systems",
+            "requirement": "mandatory"
+          },
+          "CurrentUser/": {
+            "description": "provides information about the active vendor specific user level of the controller",
+            "requirement": "mandatory",
+            "Level": {
+              "datatype": "String",
+              "description": "provides information about the access rights and determines what can be viewed, updated or deleted by a user. Depending on the user level different functionalities are available. The robot vendors might use different descriptions and access levels for the users and might require authentification",
+              "requirement": "mandatory"
+            },
+            "Name": {
+              "datatype": "String",
+              "description": "provides the name for the current user within the control system",
+              "requirement": "optional"
+            }
+          },
+          "Components/": {
+            "description": "folder for one or more components installed in the motion device system, e.g. a processing-unit, a power-supply, an IO-board or a drive, and have an electrical interface to the controller. The variables included here depend on the component, but will have the form of ComponentType e.g. ComponentName, SerialNumber, Manufacterer etc.",
+            "requirement": "optional",
+            "<ComponentName>/": {
+              "datatype": "String",
+              "description": "name identifying the component",
+              "requirement": "optional"
+            }
+          },
+          "Software/": {
+            "description": "folder for one or more software. Each controller has at least one software installed.",
+            "requirement": "mandatory",
+            "<SoftwareName>/": {
+              "datatype": "String",
+              "description": "name identifying the software",
+              "requirement": "optional",
+              "Manufacturer": {
+                "datatype": "String",
+                "description": "the name of the company that manufactured the software",
+                "requirement": "mandatory"
+              },
+              "Model": {
+                "datatype": "String",
+                "description": "the name of the product",
+                "requirement": "mandatory"
+              },
+              "SoftwareRevision": {
+                "datatype": "String",
+                "description": "current version of the software installed",
+                "requirement": "mandatory"
+              }
+            }
+          },
+          "TaskControls/": {
+            "description": "folder representing instances of task controls of a controller. The task control describes an execution engine that loads and runs task programs. One task runs one task program at the time. The system should instantiate the maximum allowed number of task controls.",
+            "requirement": "mandatory",
+            "<TaskControlName>/": {
+              "datatype": "String",
+              "description": "name identifying the task control",
+              "requirement": "mandatory",
+              "TaskProgramName": {
+                "datatype": "String",
+                "description": "provides a customer given identifier for the task program",
+                "requirement": "mandatory"
+              },
+              "TaskProgramLoaded": {
+                "datatype": "Boolean",
+                "description": "is TRUE if a task program is loaded in the task control, FALSE otherwise",
+                "requirement": "mandatory"
+              },
+              "ExecutionMode": {
+                "datatype": "UInt8",
+                "description": "tells how the task control executes the task program, 0: Single execution of a task program. 1: Task program is executed continuously and starts again automatically. 2: Task program is executed in steps. ",
+                "requirement": "optional"
+              }
+            }
+          },
+          "TotalPowerOnTime": {
+            "datatype": "Double",
+            "description": "provides the total accumulated time the controller was powered on.",
+            "requirement": "optional"
+          },
+          "StartUpTime": {
+            "datatype": "DateTime",
+            "description": "provides the date and time of the last start-up of the controller.",
+            "requirement": "optional"
+          },
+          "UpsState": {
+            "datatype": "String",
+            "description": "provides the vendor specific status of an integrated uninterruptible power supply or accumulator system.",
+            "requirement": "optional"
+          },
+          "TotalEnergyConsumption": {
+            "datatype": "Double",
+            "description": "provides total accumulated energy consumed by the motion devices related with this controller instance.",
+            "requirement": "optional"
+          },
+          "CabinetFanSpeed": {
+            "datatype": "Double",
+            "description": "provides the speed of the cabinet fan.",
+            "requirement": "optional"
+          },
+          "CPUFanSpeed": {
+            "datatype": "Double",
+            "description": "provides the speed of the CPU fan.",
+            "requirement": "optional"
+          },
+          "InputVoltage/": {
+            "description": "provides the input voltage of the controller which can be a configured value.",
+            "requirement": "optional",
+            "Value": {
+              "datatype": "Double",
+              "description": "voltage value",
+              "requirement": "optional"
+            },
+            "Definition": {
+              "datatype": "String",
+              "description": "AC or DC",
+              "requirement": "optional"
+            }
+          },
+          "Temperature": {
+            "datatype": "Double",
+            "description": "provides the controller temperature given by a temperature sensor inside of the controller.",
+            "requirement": "optional"
+          }
+        }
+      },
+
+
+
+      "SafetyStates/": {
+        "description": "folder containing the safety states of the motion devices and controllers. One motion device system is associated with one or more instances of the SafetyStateType. The safety state is for informational purpose only and not intended for use with functional safety applications.",
+        "requirement": "mandatory",
+        "<SafetyStatesName>/": {
+          "datatype": "String",
+          "description": "name identifying the safety state",
+          "requirement": "mandatory",
+          "EmergencyStopFunctions/": {
+            "description": "folder of emergency stop functions as defined by the vendor. When provided, this object contains a list of all emergency stop functions with names and current state.",
+            "requirement": "optional",
+            "<EmergencyStopFunctionName>/": {
+              "datatype": "String",
+              "description": "provides a manufacturer-specific emergency stop function identifier within the safety system.",
+              "requirement": "mandatory",
+              "Active": {
+                "datatype": "Boolean",
+                "description": "TRUE if this particular emergency stop function is active, e.g. that the emergency stop button is pressed, FALSE otherwise.",
+                "requirement": "mandatory"
+              }
+            }
+          },
+          "ProtectiveStopFunctions/": {
+            "description": "folder of protective stop functions as defined by the vendor. When provided, this object contains a list of all protective stop functions with names and current state.",
+            "requirement": "optional",
+            "<ProtectiveStopFunctionName>/": {
+              "datatype": "String",
+              "description": "provides a manufacturer-specific protective stop function identifier within the safety system.",
+              "requirement": "mandatory",
+              "Enabled": {
+                "datatype": "Boolean",
+                "description": "TRUE if this protective stop function is currently supervising the system, FALSE otherwise. A protective stop function may or may not be enabled at all times, e.g. the protective stop function of the safety doors are typically enabled in automatic operational mode and disabled in manual mode. For more info, see Tables 33 and 34 of opcfoundation.org/developer-tools/specifications-opc-ua-information-models/opc-unified-architecture-for-robotics",
+                "requirement": "mandatory"
+              },
+              "Active": {
+                "datatype": "Boolean",
+                "description": "TRUE if this particular protective stop function is active, i.e. that a stop is initiated, FALSE otherwise. If Enabled is FALSE then Active shall be FALSE.",
+                "requirement": "mandatory"
+              }
+            }
+          },
+          "OperationalMode": {
+            "datatype": "UInt8",
+            "description": "provides information about the current operational mode. Allowed values are described in ISO 10218-1:2011 Ch.5.7 Operational Modes. 0: OTHER, no valid operational mode. 1: MANUAL_REDUCED_SPEED. 2: MANUAL_HIGH_SPEED. 3: AUTOMATIC. 4: AUTOMATIC_EXTERNAL, Same as automatic but with external control eg. by a PLC.",
+            "requirement": "mandatory"
+          },
+          "EmergencyStop": {
+            "datatype": "Boolean",
+            "description": "is TRUE if one or more of the emergency stop functions in the robot system are active, FALSE otherwise. If the EmergencyStopFunctions object is provided, then the value of this variable is TRUE if one or more of the listed emergency stop functions are active.",
+            "requirement": "mandatory"
+          },
+          "ProtectiveStop": {
+            "datatype": "Boolean",
+            "description": "is TRUE if one or more of the enabled protective stop functions in the system are active, FALSE otherwise. If the ProtectiveStopFunctions object is provided, then the value of this variable is TRUE if one or more of the listed protective stop functions are enabled and active.",
+            "requirement": "mandatory"
+          }
+        }
+      },
+
+
+      "User_Defined/": {
+        "description": "this is where tags and variables that don't fit into the rest of this Common Data Structure can be included. The structure here is flexible, but the user should try to keep it logical and easy to navigate. The variable/folder names created within this type should use the `Pascal_Snake_Case` naming convention with capital letters for all first letters of words with underscore delimiters for more than one word or be inherited from the device/protocol in use. Additionally, all folder structures must be delimited with a `/` character",
+        "requirement": "optional",
+        "Config_Data": {
+          "datatype": "String",
+          "description": "this contains 'config' data from robots that support it. The config data helps to uniquely identifies the robot postion. The exact format of this variable will depend on the manufacturer: ABB have 'confdata' varaiabe (e.g. cf1) and Kuka have Status and Turns (S and T).",
+          "requirement": "optional"
+        }
+      }
+
+    }
+
+
+  }
+}
